@@ -1,23 +1,12 @@
 from person.models import ExamAttended,OptionsSelected
 from exam.models import Question
 
-import datetime
-def create_exam(examtype,ts):
-	curr_exam=ExamAttended(exam=examtype)#create new exam
-	curr_exam.save()
-	return (curr_exam,ts)
-		
 def start_exam(examtype):
 	dur=examtype.duration*60
-	try:curr_exam = ExamAttended.objects.latest("start_time")
-	except:return create_exam(examtype,dur)
-	dur_exam = datetime.timedelta(0,dur ,0)
-	#check did the last exam time full expired
-	if (curr_exam.start_time+dur_exam) < datetime.datetime.today():	return create_exam(usr,examtype,dur)		
-	#if last exam not full expired return last_exam and time left
-	timeleft = datetime.datetime.today()-curr_exam.start_time
-	sec_left = dur - timeleft.seconds
-	return (curr_exam,sec_left)
+	curr_exam=ExamAttended(exam=examtype)
+	curr_exam.save()
+	return (curr_exam,dur)
+		
 
 def save_option(cur_exam,exam_type,q):
 	mq=Question.objects.get(examtype=exam_type,qn=int(q[1])-1,subject=q[0])
