@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+	<li><a href="/accounts/profile/">Home</a> <span class="divider">/</span></li>
+	<li><a href="#">JEE</a> <span class="divider">/</span></li>
+	<li class="active" id="ExamName">{{ etype }}</li>
+</ul>
+{% endblock %}
+	
+{% block content %}
+<div class="container">
+	<div class="mini-layout">
+		<p>ExamID: <span class="examid">{{ exam_id }}</span></p>
+		<div class="mini-layout-body">	
+			<!-- Question bar
+			================================================== -->
+			<div class="pagination">
+				<ul><!--<ul class="nav nav-pills">-->
+				{% for s in subjects %}
+					{% if forloop.first %}
+					<li class="sub active">
+					<a class="subject" id="{{ s.n_questions }}" href="#">{{ s.subject }}</a>
+					</li>
+					{% else %}
+					<li class="sub">
+					<a class="subject" id="{{ s.n_questions }}" href="#">{{ s.subject }}</a>
+					</li>
+					{% endif %}
+				{% endfor %}
+				</ul>
+			</div><!-- /pagination-->
+			<h4>Question <span class="questionnumber"></span></h4>
+			<div class="question-box"></div>
+			<div class="bs-docs-grid">							
+				{% for i in "1234" %}
+					{% if not forloop.counter|divisibleby:"2" %}
+						<ul class="thumbnails">	    					
+					{% endif %}
+						<li class="span4">
+						<label class="radio">
+							<input name="Choices" class="ch{{ i }}" value="{{ i }}" type="radio">
+							<a class="thumbnail" id="opt{{ i }}"></a>
+						</label>
+						</li>
+					{% if forloop.counter|divisibleby:"2" %}
+						</ul>  					
+					{% endif %}
+				{% endfor %}
+		
+			</div><!-- /bs-docs-grid -->
+			<div class="btn-group">	
+				<button class="btn btn-success" id="btn-back">← Previous</button>
+				<button class="btn btn-success" id="btn-next">Save & Next →
+				</button>
+			</div>
+			<div class="btn-group">
+				<button class="btn btn-inverse" id="btn-skip">Skip Question
+				</button>
+				<button class="btn btn-warning" id="btn-reset">Reset Question
+				</button>
+			</div>
+			<button class="btn btn-danger" id="btn-submit">SUBMIT</button>
+				
+		</div><!-- /mini-layout-body-->	
+		<div class="mini-layout-sidebar">
+			<div class="timer-box">Time Left: <span class="testtime">{{ min_left }}</span>  No:<span class="nquests_subj"></span>
+			</div>
+			<div class="well" style="padding:5px">
+				<!-- ############################
+				will look for e_extras.py in any app/templatetags directory-->
+				{% load e_extras %}
+				{% createbtns "30" %}
+				
+			</div><!-- /well-->	
+		</div><!-- /mini-layout-sidebar-->	
+	</div><!-- /mini-layout-->
+</div><!-- /container -->	
+
+{% endblock %}
+{% block extrajavascript %}
+	<script src="/static/js/timer.js"></script>
+	<script src="/static/js/myjs.js"></script>
+{% endblock %}

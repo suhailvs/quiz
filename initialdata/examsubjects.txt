@@ -1,0 +1,5 @@
+/// examtype, subject, n_questions
+///
+JEE Main 2013|Chemistry|30
+JEE Main 2013|Physics|30
+JEE Main 2013|Mathematics|30

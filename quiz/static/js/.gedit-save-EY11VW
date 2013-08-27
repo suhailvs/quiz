@@ -1,0 +1,47 @@
+$(document).ready(function(){
+	starttimer();
+	
+	function getoptsel() {
+		if ($(":checked").hasClass("ch1"))
+			return(1);
+		else if ($(":checked").hasClass("ch2"))
+			return(2);
+		else if ($(":checked").hasClass("ch3"))
+			return(3);
+		else if ($(":checked").hasClass("ch4"))
+			return(4);
+		else return(0);
+	}
+	
+	function setResult(jsonData) {
+		//$(".alert").removeClass("alert-success");
+		//$("#opt1").html(jsonData.opt1);
+		//$(".question-box").html(jsonData.qst);
+		$("a.thumbnail #opt1")
+		var list ="question:" + jsonData.qst+ "number:"+jsonData.qn;
+		alert(list);
+	}
+	function showquestion(qn,opt){
+	//opt ==0 for allbutton(ie back, nav etc) except next
+		var subj=$("ul li.active a.subject").text();
+		alert("Question Number: "+qn+"; option selected: "+opt+"; subject: "+subj);
+		
+		var params ={ param1:qn, param2:opt, param3:subj };
+		$.ajax({ url: "/show-question/",
+			dataType: "json",
+			data: params,			
+			success: setResult });
+	}
+
+	$("#btn-next").click(function() {
+		var optsel=getoptsel();
+		var questn = $(".questionnumber").text();
+		showquestion(1+questn,optsel);	//get qestionnumber	
+		//setcolor set color .btn 1
+	});
+							
+	$(".btn-nav-quests").click(function() {
+		var questn=$(this).text();
+		showquestion(questn,0);
+	});					 
+});
